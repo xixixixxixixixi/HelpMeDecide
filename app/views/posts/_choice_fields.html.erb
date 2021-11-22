@@ -1,0 +1,20 @@
+<div class="nested-fields">
+
+  <div class="form-group">
+    <% if session[:image_count] == 0 %>
+      
+        <%= f.label :images, style: 'display:none' %>
+        <%= f.file_field :images, style: 'display:none' %>
+        <% session[:image_count] = session[:image_count] + 1 %>
+    <% else%> 
+      
+        <%= f.label :images %>
+        <%= f.file_field :images %>
+      
+    <% end %> 
+  </div>
+
+
+    <br>
+
+</div>

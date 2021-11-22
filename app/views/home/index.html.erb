@@ -1,0 +1,80 @@
+<body>
+
+<div class="header">
+  <div>
+      <h1>Help Me Decide!</h1>
+      <div>
+      <p1>Vote 
+          <b>Anytime, Anywhere</b></p1>
+      </div>
+      </div>
+</div>
+
+
+    
+<div class="btn-group btn-group-justified" role="group" aria-label="...">
+  <div class="btn-group" role="group">
+    <form class = "button_to" method="get" action="/">
+      <button type="submit" class="btn btn-info">Nearby</button>
+      <div id = "demo"></div>
+    </form>
+  </div>
+  <div class="btn-group" role="group">
+    <form class = "button_to" method="get" action="/">
+      <button type="submit" class="btn btn-info">Following</button>
+      <input style="display:none" name="follow" value="follow">
+    </form>
+  </div>
+  <div class="btn-group" role="group">
+    <form class = "button_to" method="get" action="/">
+      <button type="submit" class="btn btn-info">Popular</button>
+      <input style="display:none" name="popular" value="popular">
+    </form>
+  </div>
+</div>
+
+
+
+
+<% @posts.each do |post| %>
+    
+<div class="card movie_card">
+    
+  <div class="img">
+    <% if post.image.attached? %>
+      <%= link_to(image_tag(url_for(post.image),:class => "img"), post_path(post.id)) %>
+    <% end %>  
+  </div>
+  <div class="card-body">
+    <h5 class="card-title"><%= post.description %></h5>
+    <span class="movie_info"><%= post.user.username %></span>
+  </div>
+</div>
+<% end %>
+
+
+<script type="text/javascript">
+    var x=document.getElementById("demo");
+    getLocation();
+    function getLocation()
+    {
+      if (navigator.geolocation)
+        {
+        navigator.geolocation.getCurrentPosition(showPosition);
+        }
+      else {
+        document.getElementById("demo").innerHTML = "<input style=\"display:none\" name=\"location\" value=\"" + "nolocation" + "\">";
+        }
+    }
+    function showPosition(position)
+    {
+          var lng = position.coords.longitude;
+        var lat = position.coords.latitude;
+        var site = lat.toFixed(6)+','+lng.toFixed(6);
+        console.log(site)
+           document.getElementById("demo").innerHTML = "<input style=\"display:none\" name=\"location\" value=\"" + site + "\">";
+
+    }
+
+</script>
+</body>

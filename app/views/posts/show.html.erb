@@ -1,0 +1,136 @@
+
+<tbody>
+    <div class="d1"><%= @post.description %></div>
+    <% creater_of_the_post = User.find(@post.user_id) %>
+    <div class="d1"><a class="user_of_this_profile" href="<%= user_path(creater_of_the_post) %>" display:block ;text-align:right>
+        Created by <%= creater_of_the_post.name %>
+    </a>
+    </div>
+    
+        <% if current_user == nil %>
+        <%flash[:notice] = "You have not logged in yet. Please log in your account to vote."%> 
+
+        <% Post.Corresponding_Choices(@post).each do |choice| %>
+
+            <h3 style="text-align:center;"><%= choice.description %></h3>
+         <div class="card movie_card">
+            <div class="img">
+            <% if choice.images.attached? %>
+               <%= image_tag(choice.images,:class => "img") %>
+                </div>
+            <% end %>
+         </div>
+           
+             
+        <% end %>
+
+    <% elsif @post.user_id != current_user.id %>
+
+        <% Post.Corresponding_Choices(@post).each do |choice| %>
+    <div class="card movie_card">
+            <div class="img">
+        
+            <% if choice.images.attached? %>
+               <%= image_tag(choice.images,:class => "img") %>
+            <% end %>
+        </div>
+       <div class="caption" style="text-align:center;">
+        <%= button_to like_choice_path(choice), method: :put, remote: true , class: 'btn btn-primary' do %>
+                Vote
+                    <spam class="badge"><%= choice.get_upvotes.size%></spam>
+        <% end %>
+        </div>
+    </div>
+                  
+        <% end %>
+
+    <% elsif current_user != nil and @post.user_id == current_user.id %>
+
+        <% Post.Corresponding_Choices(@post).each do |choice| %>  
+    <div class="card movie_card">
+        <div class="img">
+            <% if choice.images.attached? %>
+               <%= image_tag(choice.images,:class => "img") %>
+            <% end %>
+        </div>
+        <div class="caption" style="text-align:center;">
+        <%= button_to like_choice_path(choice), method: :put, remote: true , class: 'btn btn-primary btn-lg' do %>
+                Vote
+                    <spam class="badge"><%= choice.get_upvotes.size%></spam>
+        <% end %>
+        </div>
+    </div>
+        <% end %>
+    
+    
+    <div class="btn-container">
+        <div class="btn-holder">
+
+        <div class="caption" style="text-align:center;">
+
+            <%= button_to post_path(@post.id), method: :delete, class: 'btn btn-primary btn-lg' do %>
+            Delete the Vote
+            <% end %>
+        </div>
+        <div class="caption" style="text-align:center;">
+            <%= button_to change_to_public_post_path(@post.id), method: :post, class: 'btn btn-primary btn-lg' do %>
+            Change to public
+            <% end %>
+        </div>
+
+        <div class="caption" style="text-align:center;">
+            <%= button_to change_to_private_post_path(@post.id), method: :post, class: 'btn btn-primary btn-lg' do %>
+            Change to private
+            <% end %>
+        </div>
+
+        <div class="caption" style="text-align:center;">
+            <%= button_to change_to_followers_only_post_path(@post.id), method: :post, class: 'btn btn-primary btn-lg' do %>
+            Change to followers only
+            <% end %>
+        </div>
+
+        <div class="caption" style="text-align:center;">
+            <%= button_to close_post_path(@post.id), method: :close, class: 'btn btn-primary btn-lg' do %>
+            Close the Vote
+            <% end %>
+        </div>
+
+
+        
+<!--div class="caption" style="text-align:center;">
+            <!%= form_tag(change_who_can_see_post_path, method: :post , class: "form-control") do %>
+            <!%= text_field_tag :who_can_see, params[:who_can_see]%>
+              <!%= submit_tag("Change who can see", :class => "btn btn-default" ) %>
+            <!% end %>
+ </div-->
+        
+        </div>
+    </div>
+        
+
+    
+
+    <% elsif current_user == nil%>     
+       flash[:notice] = "ERROR! Please go back to the home page"
+
+    <% end %>
+
+<div class="btn-group" role="group" aria-label="...">
+    <% if current_user != nil and current_user.id != creater_of_the_post.id %>
+    
+            <%= button_to follow_user_path([current_user, creater_of_the_post]), 
+            method: :put, 
+            class: 'button1' do %>
+                follow
+            <% end %>
+    
+
+            <%= button_to unfollow_user_path([current_user, creater_of_the_post]), 
+            method: :put, 
+            class: 'button1' do %>
+                unfollow
+            <% end %>
+
+        <% end %>
+    </div>
