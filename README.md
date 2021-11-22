@@ -3,9 +3,9 @@
 ### 1. Team Member Names
 
 Project Team 28 <br />
-Sixuan Wang: sw3513 <br />
-Yanhao Li: yl4735 <br />
-Yaning Ling: yl4741 <br />
+Sixuan Wang <br />
+Yanhao Li <br />
+Yaning Ling <br />
 
 ### 2. Instructions to Run the Program
 
